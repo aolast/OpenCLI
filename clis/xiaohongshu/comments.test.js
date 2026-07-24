@@ -29,6 +29,10 @@ function createPageMock(evaluateResult) {
 
 async function runCommentsExtract(html, withReplies = false) {
     const dom = new JSDOM(html, { url: 'https://www.xiaohongshu.com/search_result/abc123?xsec_token=tok' });
+    const hadDocument = Object.hasOwn(globalThis, 'document');
+    const hadLocation = Object.hasOwn(globalThis, 'location');
+    const hadWindow = Object.hasOwn(globalThis, 'window');
+    const hadHTMLElement = Object.hasOwn(globalThis, 'HTMLElement');
     const previousDocument = globalThis.document;
     const previousLocation = globalThis.location;
     const previousWindow = globalThis.window;
@@ -43,10 +47,15 @@ async function runCommentsExtract(html, withReplies = false) {
         // JSDOM fixtures below are fully static, there's nothing more to load.
         return await eval(buildCommentsExtractJs(withReplies, 1));
     } finally {
-        globalThis.document = previousDocument;
-        globalThis.location = previousLocation;
-        globalThis.window = previousWindow;
-        globalThis.HTMLElement = previousHTMLElement;
+        if (hadDocument) globalThis.document = previousDocument;
+        else delete globalThis.document;
+        if (hadLocation) globalThis.location = previousLocation;
+        else delete globalThis.location;
+        if (hadWindow) globalThis.window = previousWindow;
+        else delete globalThis.window;
+        if (hadHTMLElement) globalThis.HTMLElement = previousHTMLElement;
+        else delete globalThis.HTMLElement;
+        dom.window.close();
     }
 }
 
@@ -72,6 +81,32 @@ describe('parseXhsLikeCountText', () => {
 
 describe('xiaohongshu comments', () => {
     const command = getRegistry().get('xiaohongshu/comments');
+    it('restores JSDOM globals after DOM extraction', async () => {
+        const keys = ['document', 'location', 'window', 'HTMLElement'];
+        const before = keys.map(key => ({
+            key,
+            hadOwnProperty: Object.hasOwn(globalThis, key),
+            value: Reflect.get(globalThis, key),
+        }));
+
+        await runCommentsExtract(`
+          <main>
+            <section class="parent-comment">
+              <div class="comment-item">
+                <span class="name">Alice</span>
+                <div class="content">Root comment</div>
+              </div>
+            </section>
+          </main>
+        `);
+
+        for (const entry of before) {
+            expect(Object.hasOwn(globalThis, entry.key)).toBe(entry.hadOwnProperty);
+            if (entry.hadOwnProperty) {
+                expect(Reflect.get(globalThis, entry.key)).toBe(entry.value);
+            }
+        }
+    });
     it('returns ranked comment rows for signed full URLs', async () => {
         const page = createPageMock({
             loginWall: false,
