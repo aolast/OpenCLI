@@ -38,6 +38,25 @@ node --version
 npm install -g @jackwener/opencli
 ```
 
+**Option C — this fork's tested build:**
+This fork does not currently publish a separate npm package or GitHub Release.
+Install the exact integration commit to get both pending upstream changes:
+
+```bash
+npm install -g github:aolast/OpenCLI#69a98a9d
+```
+
+That commit contains:
+
+- [PR #2166](https://github.com/jackwener/OpenCLI/pull/2166) — adds the Nowcoder `comments` command for comment content, authors, reply relationships, and filtering.
+- [PR #2175](https://github.com/jackwener/OpenCLI/pull/2175) — fixes Xiaohongshu/Rednote `reply_to` so nested replies identify the direct target shown by the page.
+
+Use `github:aolast/OpenCLI#main` instead if you want to follow later fork
+updates, but pinning the commit is recommended for reproducible installs. The
+package still reports the upstream version `1.8.6`; the commit pin identifies
+this fork build. Browser-backed commands still require the standard OpenCLI
+Browser Bridge extension—the two patches above do not modify the extension.
+
 ### 2. Install the Browser Bridge Extension
 
 OpenCLI connects to Chrome/Chromium through a lightweight Browser Bridge extension plus a small local daemon. The daemon auto-starts when needed.

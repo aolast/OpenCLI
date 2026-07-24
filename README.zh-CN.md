@@ -37,6 +37,24 @@ node --version
 npm install -g @jackwener/opencli
 ```
 
+**方式 C — 安装本 fork 已验证的版本：**
+本 fork 目前没有单独发布 npm 包或 GitHub Release。要同时获得尚在上游
+review 的两个改动，请安装经过完整测试的固定集成 commit：
+
+```bash
+npm install -g github:aolast/OpenCLI#69a98a9d
+```
+
+该 commit 包含：
+
+- [PR #2166](https://github.com/jackwener/OpenCLI/pull/2166)：新增牛客 `comments` 命令，可提取评论内容、作者、回复关系并进行筛选。
+- [PR #2175](https://github.com/jackwener/OpenCLI/pull/2175)：修复小红书/Rednote 嵌套评论的 `reply_to`，使其表示页面展示的直接回复对象。
+
+如果希望自动跟随本 fork 后续更新，可以改用
+`github:aolast/OpenCLI#main`；需要可复现安装时，推荐固定 commit。包内仍会
+显示上游版本号 `1.8.6`，应以 commit pin 区分这个 fork 版本。浏览器型命令
+仍需安装标准 OpenCLI Browser Bridge 扩展；以上两个补丁均未修改扩展。
+
 ### 2. 安装 Browser Bridge 扩展
 
 OpenCLI 通过轻量 Browser Bridge 扩展和本地微型 daemon 与 Chrome/Chromium 通信。daemon 会按需自动启动。
