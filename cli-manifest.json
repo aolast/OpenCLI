@@ -26514,8 +26514,12 @@
       }
     ],
     "columns": [
+      "id",
+      "url",
       "title",
       "author",
+      "author_id",
+      "author_url",
       "school",
       "content",
       "likes",
@@ -26557,11 +26561,14 @@
       "rank",
       "title",
       "author",
+      "author_id",
+      "author_url",
       "school",
       "likes",
       "comments",
       "views",
-      "id"
+      "id",
+      "url"
     ],
     "type": "js",
     "modulePath": "nowcoder/experience.js",
@@ -26889,9 +26896,12 @@
       "rank",
       "title",
       "author",
+      "author_id",
+      "author_url",
       "school",
       "content",
-      "id"
+      "id",
+      "url"
     ],
     "type": "js",
     "modulePath": "nowcoder/search.js",
@@ -44912,8 +44922,11 @@
       "rank",
       "title",
       "author",
+      "author_id",
+      "author_url",
       "likes",
       "published_at",
+      "published_at_source",
       "url"
     ],
     "type": "js",
