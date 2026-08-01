@@ -92,3 +92,15 @@ Nowcoder feeds can mix two different post entities, including within `nowcoder e
 - `post_type: moment` is a feed discussion/moment. Its round-trippable `id` is the UUID, its canonical URL is `/feed/main/detail/<uuid>`, and its timestamp comes from `createdAt`.
 
 `search` and `experience` return `post_type`, `id`, `uuid`, `entity_id`, and `url`. Pass `id` or `url` directly to `nowcoder detail`; do not substitute a content UUID into `/discuss/<uuid>`.
+
+## Detail interaction metrics
+
+`nowcoder detail` exposes the five public interaction counts returned in Nowcoder's `frequencyData`:
+
+- `likes` comes from `likeCnt`.
+- `collects` comes from `followCnt`, which the detail UI labels as 收藏.
+- `comments` comes from `commentCnt`, falling back to `totalCommentCnt` when needed.
+- `shares` comes from `shareCnt`.
+- `views` comes from `viewCnt`.
+
+Each count has a matching `<metric>_status`. A present non-negative integer, including a real `0`, is returned with `available`. A missing or malformed field is returned as `null` with `unavailable`; OpenCLI does not replace unavailable data with a fabricated zero.
