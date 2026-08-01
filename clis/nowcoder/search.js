@@ -12,7 +12,7 @@ cli({
         { name: 'type', type: 'str', default: 'all', help: 'Search type (all/post/question/user/job)' },
         { name: 'limit', type: 'int', default: 10, help: 'Number of results' },
     ],
-    columns: ['rank', 'title', 'author', 'author_id', 'author_url', 'school', 'content', 'id', 'url'],
+    columns: ['rank', 'post_type', 'id', 'uuid', 'entity_id', 'url', 'title', 'author', 'author_id', 'author_url', 'school', 'content'],
     pipeline: [
         { navigate: 'https://www.nowcoder.com' },
         { evaluate: `(async () => {
